@@ -96,22 +96,39 @@
 
 		function tambah_pesan_customer(){
 
-			$data = [
-				'customer' => $this->input->post('customer'),
-				'nohp' => $this->input->post('nohp'),
-				'bad' => $this->input->post('bad'),
-				'time' => $this->input->post('time'),
-				'terapis_pilihan' => $this->input->post('trapis'),
-				'status' => $this->input->post('status'),
-				'outlet' => $this->input->post('outlet'),
-				'date' => $this->input->post('date'),
-				'desc' => $this->input->post('desc'),
-			];
+			$time = $this->input->post('time');
+			$date = $this->input->post('date');
+			$bad = $this->input->post('bad');
+
+			$this->db->where('date', $date);
+			$this->db->where('time', $time);
+			$this->db->where('bad', $bad);
+			$cek = $this->db->get('tbl_pesan_customer')->row_array();
+			if ($cek == true) {
+				
+				$this->session->set_flashdata('message', 'swal("Opss", "Data sudah tersedia", "warning" );');
+				redirect('utama/tambah_pesan');
+			}else{
+				
+
+				$data = [
+					'customer' => $this->input->post('customer'),
+					'nohp' => $this->input->post('nohp'),
+					'bad' => $this->input->post('bad'),
+					'time' => $this->input->post('time'),
+					'terapis_pilihan' => $this->input->post('trapis'),
+					'status' => $this->input->post('status'),
+					'outlet' => $this->input->post('outlet'),
+					'date' => $this->input->post('date'),
+					'desc' => $this->input->post('desc'),
+				];
 
 
-			$this->db->insert('tbl_pesan_customer', $data);
-			$this->session->set_flashdata('message', 'swal("Yess", "Data bad berhasil di tambah", "success" );');
-			redirect('utama/pesan');
+				$this->db->insert('tbl_pesan_customer', $data);
+				$this->session->set_flashdata('message', 'swal("Yess", "Data bad berhasil di tambah", "success" );');
+				redirect('utama/pesan');
+			}
+
 		}
 
 		function outlet(){
@@ -172,6 +189,23 @@
 			$this->session->set_flashdata('message', 'swal("Yess", "Data terapis berhasil di hapus", "success" );');
 			redirect('utama/terapis');
 		}
+
+		function cek_bo(){
+			$date =  $this->input->get('date');
+			$time =  $this->input->get('time');
+			$bad =  $this->input->get('bad');
+
+			$this->db->where('date', $date);
+			$this->db->where('time', $time);
+			$this->db->where('bad', $bad);
+			$cek = $this->db->get('tbl_pesan_customer')->row_array();
+			if ($cek == true) {
+
+				echo "gagal";
+			}else{
+				echo "benar";
+			}
+		}
 	}
-	
+
 ?>

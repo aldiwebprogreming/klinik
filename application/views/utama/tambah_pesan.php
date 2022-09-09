@@ -44,7 +44,7 @@
                     </div>
                     <div class="form-group">
                       <label>Bad</label>
-                      <select class="form-control" name="bad">
+                      <select class="form-control" name="bad" id="bad">
                         <option value="">-- Pilih Bad --</option>
                         <?php foreach($bad as $data){ ?>
                           <option><?= $data['bad'] ?></option>
@@ -54,12 +54,17 @@
 
                     <div class="form-group">
                       <label>Time</label>
-                      <select class="form-control" name="time">
+                      <select class="form-control" name="time" id="time">
                         <option value="">-- Pilih Time --</option>
                         <?php foreach($jam as $data){ ?>
                           <option><?= $data['jam'] ?></option>
                         <?php } ?>
                       </select>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Date</label>
+                      <input type="date" name="date" class="form-control" id="date">
                     </div>
 
                     <div class="form-group">
@@ -94,10 +99,7 @@
                       </select>
                     </div>
 
-                    <div class="form-group">
-                      <label>Date</label>
-                      <input type="date" name="date" class="form-control">
-                    </div>
+
 
                     <div class="form-group">
                       <label>Desc</label>
@@ -105,6 +107,8 @@
                     </div>
 
                     <button class="btn btn-primary">Tamah Pesan</button>
+
+                    <div class="" id="alert"></div>
 
                   </div>
                 </div>
@@ -125,3 +129,15 @@
   </section>
   <!-- /.content -->
 </div>
+<!-- <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+<script>
+  $(document).ready(function(){
+    $("#date").change(function(){
+      var date = $(this).val();
+      var time = $("#time").val();
+      var bad = $("#bad").val();
+      var url = "<?= base_url('utama/cek_bo?bad=') ?>"+bad+"&time="+time+"&date="+date;
+      $("#alert").load(url);
+    })
+  })
+</script> -->
