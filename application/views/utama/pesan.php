@@ -39,13 +39,12 @@
                   </tr>
                 </thead>
                 <tbody>
+                 <?php foreach ($jam as $data) {
 
-                  <?php foreach ($jam as $data) {
-                    
                    ?>
                    <tr>
-                    <td><?= $data['jam'] ?></td>
-                    <?php foreach ($bad as $bad2) { ?>
+                     <td><?= $data['jam'] ?></td>
+                     <?php foreach ($bad as $bad2) { ?>
                       <td>
                         <?php 
                         $this->db->where('time', $data['jam']);
@@ -75,7 +74,25 @@
                                   <p><?= $bo['terapis_pilihan'] ?></p>
                                   <hr>
                                   <label>Status</label>
-                                  <p><?= $bo['status'] ?></p>
+                                  <p>
+                                    <form class="form-inline" method="post" action="<?= base_url('utama/update_status') ?>">
+                                      <input type="hidden" name="id" value="<?= $bo['id'] ?>">
+                                      <div class="form-group mx-sm-3 mb-2">
+                                        <label for="inputPassword2" class="sr-only">Password</label>
+                                        <select class="form-control" name="status">
+                                          <option><?= $bo['status'] ?></option>
+                                          <option>Book</option>
+                                          <option>Consult</option>
+                                          <option>Treatment</option>
+                                          <option>Finished</option>
+                                          <option>Cancel</option>
+                                        </select>
+                                      </div>
+                                      <button type="submit" class="btn btn-primary mb-2">Ubah Status</button>
+                                    </form>
+
+
+                                  </p>
                                   <hr>
                                   <label>Desc</label>
                                   <p><?= $bo['desc'] ?></p>
@@ -100,22 +117,91 @@
                             <div class="modal-dialog" role="document">
                               <div class="modal-content">
                                 <div class="modal-header">
-                                  <h5 class="modal-title" id="exampleModalLabel">Appointment <?= $bad2['bad'] ?> Jam : <?= $data['jam'] ?></h5>
+                                  <h5 class="modal-title" id="exampleModalLabel">Appointment <?= $bad2['bad'] ?></h5>
                                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                   </button>
                                 </div>
                                 <div class="modal-body">
-                                  <?= $data['jam'] ?>
-                                </div>
-                                <div class="modal-footer">
-                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                  <button type="button" class="btn btn-primary">Save changes</button>
+                                  <form method="post" action="<?= base_url('utama/tambah_pesan_customer') ?>">
+                                    <div class="form-group">
+                                      <label>Customer</label>
+                                      <input type="text" name="customer" class="form-control" placeholder="Customer">
+                                    </div>
+
+                                    <div class="form-group">
+                                      <label>No hp</label>
+                                      <input type="number" name="nohp" class="form-control" placeholder="Nomor telp">
+                                    </div>
+                                    <div class="form-group">
+                                      <label>Bad</label>
+                                      <input type="text" name="bad" class="form-control" value="<?= $bad2['bad'] ?>" readonly>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                      <label>Time</label>
+                                      <select class="form-control" name="time" id="time">
+                                        <option value="">-- Pilih Time --</option>
+                                        <?php foreach($jam as $dataa){ ?>
+                                          <option><?= $dataa['jam'] ?></option>
+                                        <?php } ?>
+                                      </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                      <label>Date</label>
+                                      <input type="date" name="date" class="form-control" id="date">
+                                    </div>
+
+                                    <div class="form-group">
+                                      <label>Terapis</label>
+                                      <select class="form-control" name="trapis">
+                                        <option>-- Pilih Terapis --</option>
+                                        <?php foreach ($terapis as $dataa){ ?>
+                                          <option><?= $dataa['terapis'] ?></option>
+                                        <?php } ?>
+                                      </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                      <label>Status</label>
+                                      <select class="form-control" name="status">
+                                        <option>-- Pilih status --</option>
+                                        <option>Book</option>
+                                        <option>Consult</option>
+                                        <option>Treatment</option>
+                                        <option>Finished</option>
+                                        <option>Cancel</option>
+                                      </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                      <label>Outlet</label>
+                                      <select class="form-control" name="outlet">
+                                        <option>-- Pilih outlet --</option>
+                                        <?php foreach ($outlet as $dataa){ ?>
+                                          <option><?= $dataa['outlet'] ?></option>
+                                        <?php } ?>
+                                      </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                      <label>Desc</label>
+                                      <textarea class="form-control" name="desc"></textarea>
+                                    </div>
+
+
+
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Save Appointment</button>
+                                  </form>
                                 </div>
                               </div>
                             </div>
                           </div>
-
                           <?php 
                         }
                         ?>

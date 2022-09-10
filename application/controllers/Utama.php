@@ -22,6 +22,11 @@
 
 			$data['jam'] = $this->db->get('tbl_jam')->result_array();
 			$data['bad'] = $this->db->get('tbl_bad')->result_array();
+
+
+			
+			$data['terapis'] = $this->db->get('tbl_terapis')->result_array();
+			$data['outlet'] = $this->db->get('tbl_outlet')->result_array();
 			
 			$this->load->view('template/header');
 			$this->load->view('utama/pesan', $data);
@@ -205,6 +210,17 @@
 			}else{
 				echo "benar";
 			}
+		}
+
+		function update_status(){
+
+			$id = $this->input->post('id');
+			$status = $this->input->post('status');
+
+			$this->db->where('id', $id);
+			$this->db->update('tbl_pesan_customer', ['status' => $status]);
+			$this->session->set_flashdata('message', 'swal("Yess", "Status berhasil diupdate", "success" );');
+			redirect('utama/pesan');
 		}
 	}
 
