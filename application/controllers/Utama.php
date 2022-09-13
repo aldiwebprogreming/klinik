@@ -9,6 +9,9 @@
 		function __construct()
 		{
 			parent::__construct();
+			if ($this->session->username == false) {
+				redirect('login/');
+			}
 		}
 
 		function index(){
@@ -20,13 +23,23 @@
 
 		function pesan(){
 
+			if ($this->input->post() == true) {
+				$data['date'] = $this->input->post('date');
+
+			}else{
+				$data['date'] = '';
+			}
+
 			$data['jam'] = $this->db->get('tbl_jam')->result_array();
 			$data['bad'] = $this->db->get('tbl_bad')->result_array();
+			$data['status'] = $this->db->get('tbl_status')->result_array();
 
 
 			
 			$data['terapis'] = $this->db->get('tbl_terapis')->result_array();
 			$data['outlet'] = $this->db->get('tbl_outlet')->result_array();
+
+			
 			
 			$this->load->view('template/header');
 			$this->load->view('utama/pesan', $data);
@@ -40,7 +53,7 @@
 			];
 
 			$this->db->insert('tbl_jam', $data);
-			$this->session->set_flashdata('message', 'swal("Yess", "Data jam berhasil di tambah", "success" );');
+			$this->session->set_flashdata('message', 'swal("Yess", "Data jam berhasil ditambah", "success" );');
 			redirect('utama/jam');
 		}
 
@@ -49,7 +62,7 @@
 			$id = $this->input->get('id');
 			$this->db->where('id', $id);
 			$this->db->delete('tbl_jam');
-			$this->session->set_flashdata('message', 'swal("Yess", "Data jam berhasil di hapus", "success" );');
+			$this->session->set_flashdata('message', 'swal("Yess", "Data jam berhasil dihapus", "success" );');
 			redirect('utama/jam');
 		}
 
@@ -74,7 +87,7 @@
 			];
 
 			$this->db->insert('tbl_bad', $data);
-			$this->session->set_flashdata('message', 'swal("Yess", "Data Bad berhasil di tambah", "success" );');
+			$this->session->set_flashdata('message', 'swal("Yess", "Data Bad berhasil ditambah", "success" );');
 			redirect('utama/bad');
 		}
 
@@ -83,7 +96,7 @@
 			$id = $this->input->get('id');
 			$this->db->where('id', $id);
 			$this->db->delete('tbl_bad');
-			$this->session->set_flashdata('message', 'swal("Yess", "Data bad berhasil di hapus", "success" );');
+			$this->session->set_flashdata('message', 'swal("Yess", "Data bad berhasil dihapus", "success" );');
 			redirect('utama/bad');
 		}
 
@@ -130,7 +143,7 @@
 
 
 				$this->db->insert('tbl_pesan_customer', $data);
-				$this->session->set_flashdata('message', 'swal("Yess", "Data bad berhasil di tambah", "success" );');
+				$this->session->set_flashdata('message', 'swal("Yess", "Data bad berhasil ditambah", "success" );');
 				redirect('utama/pesan');
 			}
 
@@ -151,7 +164,7 @@
 			];
 
 			$this->db->insert('tbl_outlet', $data);
-			$this->session->set_flashdata('message', 'swal("Yess", "Data outlet berhasil di tambah", "success" );');
+			$this->session->set_flashdata('message', 'swal("Yess", "Data outlet berhasil ditambah", "success" );');
 			redirect('utama/outlet');
 
 		}
@@ -161,7 +174,7 @@
 			$id = $this->input->get('id');
 			$this->db->where('id', $id);
 			$this->db->delete('tbl_outlet');
-			$this->session->set_flashdata('message', 'swal("Yess", "Data outlet berhasil di hapus", "success" );');
+			$this->session->set_flashdata('message', 'swal("Yess", "Data outlet berhasil dihapus", "success" );');
 			redirect('utama/outlet');
 		}
 
@@ -181,7 +194,7 @@
 			];
 
 			$this->db->insert('tbl_terapis', $data);
-			$this->session->set_flashdata('message', 'swal("Yess", "Data terapis berhasil di tambah", "success" );');
+			$this->session->set_flashdata('message', 'swal("Yess", "Data terapis berhasil ditambah", "success" );');
 			redirect('utama/terapis');
 
 		}
@@ -191,7 +204,7 @@
 			$id = $this->input->get('id');
 			$this->db->where('id', $id);
 			$this->db->delete('tbl_terapis');
-			$this->session->set_flashdata('message', 'swal("Yess", "Data terapis berhasil di hapus", "success" );');
+			$this->session->set_flashdata('message', 'swal("Yess", "Data terapis berhasil dihapus", "success" );');
 			redirect('utama/terapis');
 		}
 
@@ -222,6 +235,96 @@
 			$this->session->set_flashdata('message', 'swal("Yess", "Status berhasil diupdate", "success" );');
 			redirect('utama/pesan');
 		}
+
+
+		function user(){
+			$data['user'] = $this->db->get('tbl_user')->result_array();
+			$this->load->view('template/header');	
+			$this->load->view('utama/user', $data);
+			$this->load->view('template/footer');
+		}
+
+		function add_user(){
+
+			$data = [
+				'username' => $this->input->post('username'),
+				'pass' =>password_hash($this->input->post('pass'), PASSWORD_DEFAULT),
+				'role' => $this->input->post('role'),
+			];
+
+			$this->db->insert('tbl_user', $data);
+			$this->session->set_flashdata('message', 'swal("Yess", "User berhasil ditambah", "success" );');
+			redirect('utama/user');
+		}
+
+		function hapus_user(){
+
+			$id = $this->input->get('id');
+			$this->db->where('id', $id);
+			$this->db->delete('tbl_user');
+			$this->session->set_flashdata('message', 'swal("Yess", "User berhasil dihapus", "success" );');
+			redirect('utama/user');
+
+		}
+
+		function edit_user(){
+
+			$id = $this->input->post('id');
+			$username = $this->input->post('username');
+			$role = $this->input->post('role');
+
+			$data = [
+				'username' => $username,
+				'role' => $role
+			];
+
+			$this->db->where('id', $id);
+			$this->db->update('tbl_user', $data);
+			$this->session->set_flashdata('message', 'swal("Yess", "User berhasil diedit", "success" );');
+			redirect('utama/user');
+		}
+
+
+		function status(){
+
+			$data['status'] = $this->db->get('tbl_status')->result_array();
+			$this->load->view('template/header');
+			$this->load->view('utama/status', $data);
+			$this->load->view('template/footer');
+		}
+
+		function add_status(){
+
+			$data = [
+				'status' => $this->input->post('status'),
+			];
+			$this->db->insert('tbl_status', $data);
+			$this->session->set_flashdata('message', 'swal("Yess", "Status berhasil ditambah", "success" );');
+			redirect('utama/status');
+		}
+
+		function hapus_status(){
+
+			$id = $this->input->get('id');
+			$this->db->where('id', $id);
+			$this->db->delete('tbl_status');
+			$this->session->set_flashdata('message', 'swal("Yess", "Status berhasil dihapus", "success" );');
+			redirect('utama/status');
+
+		}
+
+		function edit_status(){
+
+			$id = $this->input->post('id');
+			$this->db->where('id', $id);
+			$this->db->update('tbl_status',['status' => $this->input->post('status')]);
+			$this->session->set_flashdata('message', 'swal("Yess", "Status berhasil diedit", "success" );');
+			redirect('utama/status');
+
+		}
+
+
+		
 	}
 
 ?>
